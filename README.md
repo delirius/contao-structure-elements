@@ -1,4 +1,4 @@
-![Alt text](docs/logo.png?raw=true "logo")
+![Alt text](docs/canvas.png?raw=true "")
 
 
 # Welcome to Structure elements
