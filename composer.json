@@ -5,8 +5,10 @@
         "contao",
         "structure",
         "struktur",
+        "inhalt",
         "element",
         "form",
+        "formular",
         "grid",
         "wrapper",
         "bundle"
