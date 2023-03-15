@@ -30,7 +30,7 @@ class StructureStopController extends AbstractContentElementController {
 	protected function getResponse(Template $template, ContentModel $model, Request $request): Response{
 
 		$strHtml = '</';
-		$strHtml .= $model->strc_element . ' ';
+		$strHtml .= $model->strc_element;
 		$strHtml .= '>';
 
 		$request = System::getContainer()->get('request_stack')->getCurrentRequest();

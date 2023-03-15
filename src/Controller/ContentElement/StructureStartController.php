@@ -18,6 +18,8 @@ use Contao\ContentModel;
 use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\System;
+use Contao\Config;
+use Contao\Input;
 use Contao\Template;
 use Contao\StringUtil;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,12 +50,8 @@ class StructureStartController extends AbstractContentElementController {
 
 			if (is_array($arrAdd) && count($arrAdd) > 0) {
 				foreach ($arrAdd as $value) {
-
-					if (!$value) {continue;}
-					if (is_array($value)) {continue;}
-
-					$arrAttr[] = html_entity_decode(trim($value . ''));
-
+					if (!$value || is_array($value)) {continue;}
+					$arrAttr[] = html_entity_decode(trim($value));
 				}
 			}
 		}
@@ -62,7 +60,8 @@ class StructureStartController extends AbstractContentElementController {
 		$strHtml .= html_entity_decode($model->strc_element);
 
 		if (is_array($arrAttr) && count($arrAttr) > 0) {
-			$strHtml .= ' ' . StringUtil::encodeEmail((string) implode(' ', $arrAttr));
+			$strAttr = html_entity_decode(implode(' ', $arrAttr));
+			$strHtml .= ' ' . StringUtil::encodeEmail((string) $strAttr);
 		}
 		$strHtml .= '>';
 
@@ -77,7 +76,7 @@ class StructureStartController extends AbstractContentElementController {
 		}
 
 		// $template->text = $model->text;
-		$template->html = $strHtml;
+		$template->html = Input::stripTags($strHtml, Config::get('allowedTags'), Config::get('allowedAttributes'));
 
 		return $template->getResponse();
 	}

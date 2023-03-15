@@ -77,13 +77,14 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['strc_element_attribute'] = array(
 	'eval' => array(
 		'tl_class' => 'clr',
 		'maxlength' => 128,
+		'decodeEntities' => true,
 	),
 
 );
 $GLOBALS['TL_DCA']['tl_form_field']['fields']['strc_content'] = array(
 	'exclude' => true, // Zugang fuer Benutzer
 	'inputType' => 'text',
-	'eval' => array('maxlength' => 255, 'tl_class' => 'w50 clr'),
+	'eval' => array('maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50 clr'),
 	'sql' => "varchar(255) NOT NULL default ''",
 
 );

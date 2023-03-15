@@ -47,44 +47,13 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['strc_color'] = array(
 	'sql' => "varchar(6) NOT NULL default ''",
 
 );
-// $GLOBALS['TL_DCA']['tl_content']['fields']['strc_element'] = array(
-// 	'exclude' => true, // Zugang fuer Benutzer
-// 	'search' => true,
-// 	'filter' => true,
-// 	'sorting' => true,
-// 	'inputType' => 'text',
-// 	'eval' => array('mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50 clr'),
-// 	'sql' => "varchar(255) NOT NULL default ''",
-
-// );
 $GLOBALS['TL_DCA']['tl_content']['fields']['strc_element'] = array(
 	'exclude' => true, // Zugang fuer Benutzer
 	'search' => true,
 	'filter' => true,
 	'sorting' => true,
-	'inputType' => 'select',
-	'options' => array(
-		'div',
-		'span',
-		'a',
-		'button',
-		'br',
-		'hr',
-		'i',
-		'ol',
-		'ul',
-		'li',
-		'article',
-		'aside',
-		'details',
-		'footer',
-		'header',
-		'nav',
-		'section',
-		'summary',
-	),
-
-	'eval' => array('mandatory' => true, 'maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50 clr'),
+	'inputType' => 'text',
+	'eval' => array('mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50 clr'),
 	'sql' => "varchar(255) NOT NULL default ''",
 
 );

@@ -12,6 +12,8 @@ namespace Delirius\ContaoStructureElements\Widget\Frontend;
 use Contao\Widget;
 use Contao\System;
 use Contao\StringUtil;
+use Contao\Config;
+use Contao\Input;
 use Contao\BackendTemplate;
 use Delirius\ContaoStructureElements\BackendHelper\Helper;
 
@@ -64,7 +66,7 @@ class FormStructureStart extends Widget {
 						if (!$value) {continue;}
 						if (is_array($value)) {continue;}
 
-						$arrAttr[] = html_entity_decode(trim($value . ''));
+						$arrAttr[] = htmlspecialchars_decode(trim($value . ''));
 
 					}
 				}
@@ -97,25 +99,25 @@ class FormStructureStart extends Widget {
 
 			if (is_array($arrAdd) && count($arrAdd) > 0) {
 				foreach ($arrAdd as $value) {
-
-					if (!$value) {continue;}
-					if (is_array($value)) {continue;}
-
-					$arrAttr[] = html_entity_decode(trim($value . ''));
+					if (!$value || is_array($value)) {continue;}
+					$arrAttr[] = trim($value);
 				}
 			}
 		}
 		if (is_array($arrAttr) && count($arrAttr) > 0) {
-			$this->attr = ' ' . StringUtil::encodeEmail((string) implode(' ', $arrAttr));
+			$strAttr = html_entity_decode(implode(' ', $arrAttr));
+			$this->attr = ' ' . StringUtil::encodeEmail((string) $strAttr);
 		}
 
-		return sprintf(
+		$element = sprintf(
 			'<%s class="%s"%s>%s',
 			$this->strc_element,
 			$this->prefix . ($this->class ? ' ' . $this->class : ''),
 			$this->attr,
 			StringUtil::encodeEmail((string) $this->strc_content),
 		);
+
+		return Input::stripTags($element, Config::get('allowedTags'), Config::get('allowedAttributes'));
 	}
 }
 
