@@ -51,7 +51,7 @@ class StructureStartController extends AbstractContentElementController {
 			if (is_array($arrAdd) && count($arrAdd) > 0) {
 				foreach ($arrAdd as $value) {
 					if (!$value || is_array($value)) {continue;}
-					$arrAttr[] = html_entity_decode(trim($value));
+					$arrAttr[] = trim($value);
 				}
 			}
 		}

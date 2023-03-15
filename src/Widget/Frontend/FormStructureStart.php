@@ -62,12 +62,8 @@ class FormStructureStart extends Widget {
 
 				if (is_array($arrAdd) && count($arrAdd) > 0) {
 					foreach ($arrAdd as $value) {
-
-						if (!$value) {continue;}
-						if (is_array($value)) {continue;}
-
+						if (!$value || is_array($value)) {continue;}
 						$arrAttr[] = htmlspecialchars_decode(trim($value . ''));
-
 					}
 				}
 			}
