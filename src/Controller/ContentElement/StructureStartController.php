@@ -59,14 +59,15 @@ class StructureStartController extends AbstractContentElementController {
 		}
 
 		$strHtml = '<';
-		$strHtml .= html_entity_decode($model->strc_element) . ' ';
+		$strHtml .= html_entity_decode($model->strc_element);
+
 		if (is_array($arrAttr) && count($arrAttr) > 0) {
-			$strHtml .= implode(' ', $arrAttr);
+			$strHtml .= ' ' . StringUtil::encodeEmail((string) implode(' ', $arrAttr));
 		}
 		$strHtml .= '>';
 
 		if ($model->strc_content) {
-			$strHtml .= html_entity_decode($model->strc_content);
+			$strHtml .= StringUtil::encodeEmail((string) $model->strc_content);
 		}
 
 		$request = System::getContainer()->get('request_stack')->getCurrentRequest();

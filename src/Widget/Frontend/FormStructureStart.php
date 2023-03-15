@@ -106,7 +106,7 @@ class FormStructureStart extends Widget {
 			}
 		}
 		if (is_array($arrAttr) && count($arrAttr) > 0) {
-			$this->attr = ' ' . implode(' ', $arrAttr);
+			$this->attr = ' ' . StringUtil::encodeEmail((string) implode(' ', $arrAttr));
 		}
 
 		return sprintf(
@@ -114,7 +114,7 @@ class FormStructureStart extends Widget {
 			$this->strc_element,
 			$this->prefix . ($this->class ? ' ' . $this->class : ''),
 			$this->attr,
-			html_entity_decode($this->strc_content),
+			StringUtil::encodeEmail((string) $this->strc_content),
 		);
 	}
 }
