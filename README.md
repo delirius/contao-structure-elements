@@ -12,8 +12,11 @@ Die HTML-Elemente werden bei der **Frontend-Ausgabe** gemäss den Contao Einstel
 
 ```
 Erlaubte HTML-Tags: <iframe>
-Erlaubte HTML-Attribute: iframe - src,style,allowfullscreen
+Erlaubte HTML-Attribute: iframe | src,style,allowfullscreen
 ```
+E-Mails werden mit Contao verschlüsselt.
+
+## Screenshots
 
 ### Eingabemaske
 ![Alt text](docs/structure_start.png?raw=true "struture element start")
