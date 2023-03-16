@@ -1,12 +1,14 @@
 {
     "name": "delirius/contao-structure-elements",
-    "description": "Struktur Element für Contao erstellt jeweils ein Start und ein Stop Element als Inhaltselement oder als Formularelement. Es kann ein HTML-Element mit ID, Klasse, Attribute definiert werden.",
+    "description": "Struktur Element für Contao erstellt jeweils ein Start- und ein Stop-Element anwendbar als Inhaltselement oder als Formularelement. Im Start-Element können HTML-Tag, ID, Klasse und eigene Attribute definiert werden.",
     "keywords": [
         "contao",
         "structure",
         "struktur",
         "inhalt",
         "element",
+        "HTML-Tag",
+        "HTML-Attribute",
         "form",
         "formular",
         "grid",
