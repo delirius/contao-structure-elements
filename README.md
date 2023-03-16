@@ -36,7 +36,7 @@ E-Mails werden automatisch verschlüsselt ausgegeben.
 ## Screenshots
 
 ### Eingabemaske
-![Alt text](docs/structure_start.png?raw=true "struture element start")
+![Alt text](docs/structure_start2.png?raw=true "struture element start")
 
 ### Darstellung Contao Backend
 ![Alt text](docs/structure_start_grid.png?raw=true "struture element grid")
