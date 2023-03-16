@@ -6,6 +6,7 @@ Beim erstellen und speichern vom Start-Element wird automatisch das Stop-Element
 
 Die Erweiterung eignet sich zum abbilden von Strukturen einer Webseite wie Grid, Button, Card, Dropdown oder ähnliches. Die Elemente können wie gewohnt im Contao Backend verschoben, kopiert und als Inhaltselement platziert werden.
 
+
 | Titel | Wird für die Darstellung im Backend verwendet |
 | Farbe | Wird für die Darstellung im Backend verwendet |
 | HTML-Tag | Erlaubt sind HTML-Tags gemäss den Contao-Einstellungen |
