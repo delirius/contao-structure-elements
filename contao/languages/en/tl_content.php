@@ -15,7 +15,7 @@ declare (strict_types = 1);
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_content']['structurespec_legend'] = "Element presentation (internal)";
+$GLOBALS['TL_LANG']['tl_content']['structurespec_legend'] = "Element presentation Backend";
 $GLOBALS['TL_LANG']['tl_content']['structure_legend'] = "Element";
 
 /**
@@ -30,8 +30,8 @@ $GLOBALS['TL_LANG']['tl_content']['structure_legend'] = "Element";
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_content']['strc_title'] = ["Title", ""];
-$GLOBALS['TL_LANG']['tl_content']['strc_element'] = ["Element", "Element e.g. div, span, button, a"];
-$GLOBALS['TL_LANG']['tl_content']['strc_element_attribute'] = ["Attributes", "Attributes e.g. type=\"button\" data-bs-toggle=\"collapse\" disabled aria-expanded=\"false\""];
+$GLOBALS['TL_LANG']['tl_content']['strc_element'] = ["HTML-Tag", "Element e.g. div, span, button, a"];
+$GLOBALS['TL_LANG']['tl_content']['strc_element_attribute'] = ["HTML-Attributes", "Attributes e.g. type=\"button\" data-bs-toggle=\"collapse\" disabled aria-expanded=\"false\""];
 $GLOBALS['TL_LANG']['tl_content']['strc_content'] = ["Content", "Plain text for buttons, links, etc."];
 
 // $GLOBALS['TL_LANG']['tl_content']['strc_pairing'] = ["Pairing", ""];
