@@ -14,7 +14,7 @@ Die Erweiterung eignet sich zum abbilden von Strukturen einer Webseite wie Grid,
 | HTML-Tag | Erlaubt sind HTML-Tags gemäss den Contao-Einstellungen |
 | ID | Standard Feld `id` (nur bei Inhaltselementen verfügbar) |
 | Klasse | Standard Feld `class` |
-| HTML-Attribute | Ergänzende Attribute wie `type`, `data-*`, 'aria-*' |
+| HTML-Attribute | Ergänzende Attribute wie `type`, `data-*`, `aria-*` |
 | Inhalt | Reiner Text |
 
 ## Sicherheit
