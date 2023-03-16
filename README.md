@@ -28,6 +28,7 @@ Erlaubte HTML-Attribute:
 ```
 iframe | src,style,allowfullscreen
 button | type,disabled
+a | role
 ```
 E-Mails werden automatisch verschlüsselt ausgegeben.
 
