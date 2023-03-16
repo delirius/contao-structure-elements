@@ -53,7 +53,8 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['strc_element'] = array(
 	'filter' => true,
 	'sorting' => true,
 	'inputType' => 'text',
-	'eval' => array('mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50 clr'),
+	'explanation' => 'htmltag',
+	'eval' => array('mandatory' => true, 'maxlength' => 255, 'helpwizard' => true, 'tl_class' => 'w50 clr'),
 	'sql' => "varchar(255) NOT NULL default ''",
 
 );

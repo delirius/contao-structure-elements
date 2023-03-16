@@ -15,7 +15,7 @@ declare (strict_types = 1);
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_form_field']['structurespec_legend'] = "Element presentation (internal)";
+$GLOBALS['TL_LANG']['tl_form_field']['structurespec_legend'] = "Element presentation Backend";
 $GLOBALS['TL_LANG']['tl_form_field']['structure_legend'] = "Element";
 
 /**

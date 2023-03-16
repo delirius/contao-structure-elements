@@ -2,9 +2,9 @@
 
 Struktur Element für Contao erstellt jeweils ein Start- und ein Stop-Element anwendbar als **Inhaltselement** oder als **Formularelement**. Im Start-Element können HTML-Tag, ID, Klasse und eigene Attribute definiert werden.
 
-Beim erstellen und speichern vom Start-Element wird automatisch das **Stop-Element generiert** und verknüpft. Wird eine Element (Artikel, Seite, Formular) kopiert, werden die Elemente neu verknüpft. Wird ein Element gelöscht wird das dazugehörige Element ebenfalls gelöscht.
+Beim erstellen und speichern vom Start-Element wird automatisch das **Stop-Element generiert** und verknüpft. Die Elemente können wie gewohnt im Contao Backend verschoben, kopiert und als Inhaltselement platziert werden. Wird eine Element (Artikel, Seite, Formular) kopiert, werden die Elemente neu verknüpft. Wird ein Element gelöscht wird das dazugehörige Element ebenfalls gelöscht.
 
-Die Erweiterung eignet sich zum abbilden von Strukturen einer Webseite wie Grid, Button, Card, Dropdown oder ähnliches. Die Elemente können wie gewohnt im Contao Backend verschoben, kopiert und als Inhaltselement platziert werden.
+Die Erweiterung eignet sich zum abbilden von Strukturen einer Webseite wie Grid, Button, Card, Dropdown oder ähnliches. 
 
 
 | Feld | Beschreibung |
@@ -14,11 +14,11 @@ Die Erweiterung eignet sich zum abbilden von Strukturen einer Webseite wie Grid,
 | HTML-Tag | Erlaubt sind HTML-Tags gemäss den Contao-Einstellungen |
 | ID | Standard Feld `id` (nur bei Inhaltselementen verfügbar) |
 | Klasse | Standard Feld `class` |
-| HTML-Attribute | Ergänzende Attribute wie `type`, `data-*`, `aria-*` |
+| HTML-Attribute | Ergänzende Attribute wie `data-*`, `aria-*`, `title`, `href`, `style` |
 | Inhalt | Reiner Text |
 
 ## Sicherheit
-Um die Sicherheit zu gewährleisten, werden bei der **Frontend-Ausgabe** die HTML-Tags **gefiltert**, gemäss den Contao-Einstellungen für erlaubte HTML-Tags und erlaubte HTML-Attribute. Wenn nötig, müssen spezielle HTML-Tags und HTML-Attribute in den Einstellungen hinzugefügt werden.
+Um die Sicherheit zu gewährleisten, werden bei der **Frontend-Ausgabe** die HTML-Tags **gefiltert**, gemäss den Contao-Einstellungen für erlaubte HTML-Tags und erlaubte HTML-Attribute. Wenn nötig, müssen spezielle HTML-Tags und HTML-Attribute in den Einstellungen -> Sicherheitseinstellungen hinzugefügt werden.
 
 Erlaubte HTML-Tags: 
 ```
@@ -27,7 +27,7 @@ Erlaubte HTML-Tags:
 Erlaubte HTML-Attribute:
 ```
 iframe | src,style,allowfullscreen
-button | disabled
+button | type,disabled
 ```
 E-Mails werden automatisch verschlüsselt ausgegeben.
 
