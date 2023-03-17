@@ -30,8 +30,8 @@ $GLOBALS['TL_LANG']['tl_form_field']['structure_legend'] = "Element";
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_form_field']['strc_title'] = ["Title", ""];
-$GLOBALS['TL_LANG']['tl_form_field']['strc_element'] = ["Element", "Element e.g. div, span, button, a"];
-$GLOBALS['TL_LANG']['tl_form_field']['strc_element_attribute'] = ["Attributes", "Attributes e.g. type=\"button\" data-bs-toggle=\"collapse\" disabled aria-expanded=\"false\""];
+$GLOBALS['TL_LANG']['tl_form_field']['strc_element'] = ["HTML tag", "HTML tags are allowed according to the Contao settings e.g. div, span, button, a"];
+$GLOBALS['TL_LANG']['tl_form_field']['strc_element_attribute'] = ["HTML attributes", "HTML attributes are allowed according to the Contao settings e.g. data-bs-toggle=\"collapse\", aria-expanded=\"false\", title=\"Show\", href=\"#\", style=\"color:blue;\""];
 $GLOBALS['TL_LANG']['tl_form_field']['strc_content'] = ["Content", "Plain text for button, links, etc."];
 
 // $GLOBALS['TL_LANG']['tl_form_field']['strc_pairing'] = ["Pairing", ""];

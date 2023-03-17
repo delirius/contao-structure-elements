@@ -52,7 +52,8 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['strc_element'] = array(
 	'filter' => true,
 	'sorting' => true,
 	'inputType' => 'text',
-	'eval' => array('mandatory' => true, 'maxlength' => 255, 'tl_class' => 'clr'),
+	'explanation' => 'htmltag',
+	'eval' => array('mandatory' => true, 'maxlength' => 255, 'helpwizard' => true, 'tl_class' => 'clr'),
 	'sql' => "varchar(255) NOT NULL default ''",
 
 );
