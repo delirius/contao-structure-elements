@@ -11,7 +11,7 @@ Die Erweiterung eignet sich zum abbilden von Strukturen einer Webseite wie Grid,
 | :--- | :--- |
 | Titel | Wird für die Darstellung im Backend verwendet |
 | Farbe | Wird für die Darstellung im Backend verwendet |
-| HTML-Tag | HTML Element wie `div`, `span`, `button`, `a` etc. Erlaubt sind HTML-Tags gemäss den Contao-Einstellungen |
+| HTML-Tag | HTML Element wie `div`, `span`, `button`, `a`, etc. Erlaubt sind HTML-Tags gemäss den Contao-Einstellungen |
 | ID | Standard Feld `id` (nur bei Inhaltselementen verfügbar) |
 | Klasse | Standard Feld `class` |
 | HTML-Attribute | Ergänzende Attribute wie `data-*`, `aria-*`, `title`, `href`, `style` |
