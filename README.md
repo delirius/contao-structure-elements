@@ -1,6 +1,6 @@
 # Struktur Element für Contao
 
-Struktur Element für Contao erstellt jeweils ein Start- und ein Stop-Element anwendbar als **Inhaltselement** oder als **Formularelement**. Im Start-Element können HTML-Tag, ID, Klasse und eigene Attribute definiert werden.
+HTML Struktur Element erstellt jeweils ein Start- und ein Stop-Element anwendbar als **Inhaltselement** oder als **Formularelement**. Im Start-Element können HTML-Tag, ID, Klasse und eigene Attribute definiert werden.
 
 Beim erstellen und speichern vom Start-Element wird automatisch das **Stop-Element generiert** und verknüpft. Die Elemente können wie gewohnt im Contao Backend verschoben, kopiert und als Inhaltselement platziert werden. Wird eine Element (Artikel, Seite, Formular) kopiert, werden die Elemente neu verknüpft. Wird ein Element gelöscht wird das dazugehörige Element ebenfalls gelöscht.
 
@@ -11,7 +11,7 @@ Die Erweiterung eignet sich zum abbilden von Strukturen einer Webseite wie Grid,
 | :--- | :--- |
 | Titel | Wird für die Darstellung im Backend verwendet |
 | Farbe | Wird für die Darstellung im Backend verwendet |
-| HTML-Tag | Erlaubt sind HTML-Tags gemäss den Contao-Einstellungen |
+| HTML-Tag | HTML Element wie 'div', 'button', etc. Erlaubt sind HTML-Tags gemäss den Contao-Einstellungen |
 | ID | Standard Feld `id` (nur bei Inhaltselementen verfügbar) |
 | Klasse | Standard Feld `class` |
 | HTML-Attribute | Ergänzende Attribute wie `data-*`, `aria-*`, `title`, `href`, `style` |
