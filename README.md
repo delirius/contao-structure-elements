@@ -18,10 +18,10 @@ Die Erweiterung eignet sich zum abbilden von Strukturen einer Webseite wie Grid,
 | Inhalt | Reiner Text |
 
 ## Contao
-Contao: ^4.13 und ^5.0<br>
+Contao: ^4.13 oder ^5.0<br>
 PHP:  ^8.1<br>
 
-**Contao Inserttags** werden bei der Frontend-Ausgabe umgewandelt, wie `&copy; {{date::Y}}`.<br>
+**Contao Inserttags** werden bei der Frontend-Ausgabe umgewandelt, wie `© {{date::Y}}`.<br>
 **E-Mails** werden automatisch erkannt und verschlüsselt ausgegeben.<br>
 
 
