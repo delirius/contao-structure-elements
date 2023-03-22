@@ -17,6 +17,13 @@ Die Erweiterung eignet sich zum abbilden von Strukturen einer Webseite wie Grid,
 | HTML-Attribute | Ergänzende Attribute wie `data-*`, `aria-*`, `title`, `href`, `style` |
 | Inhalt | Reiner Text |
 
+## Contao
+Contao: ^4.13 und ^5.0
+PHP:  ^8.1
+**Contao Inserttags** werden bei der Frontend-Ausgabe umgewandelt, wie `&copy; {{date::Y}}`.
+**E-Mails** werden automatisch erkannt und verschlüsselt ausgegeben.
+
+
 ## Sicherheit
 Um die Sicherheit zu gewährleisten, werden bei der **Frontend-Ausgabe** die HTML-Tags **gefiltert**, gemäss den Contao-Einstellungen für erlaubte HTML-Tags und erlaubte HTML-Attribute. Wenn nötig, müssen spezielle HTML-Tags und HTML-Attribute in den Einstellungen -> Sicherheitseinstellungen hinzugefügt werden.
 
@@ -32,7 +39,6 @@ iframe | src,style,allowfullscreen
 button | type,disabled
 a | type,role
 ```
-E-Mails werden automatisch verschlüsselt ausgegeben.
 
 
 
