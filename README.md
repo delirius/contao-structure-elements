@@ -11,20 +11,18 @@ Die Erweiterung eignet sich zum abbilden von Strukturen einer Webseite wie Grid,
 | :--- | :--- |
 | Titel | Wird für die Darstellung im Backend verwendet |
 | Farbe | Wird für die Darstellung im Backend verwendet |
-| HTML-Tag | HTML Element wie `div`, `span`, `button`, `a`, etc. Erlaubt sind HTML-Tags gemäss den Contao-Einstellungen |
+| HTML-Tag | HTML Element wie `div`, `span`, `button`, `a`, etc. Erlaubt sind HTML-Tags gemäss den Contao-Einstellungen #sicherheit |
 | ID | Standard Feld `id` (nur bei Inhaltselementen verfügbar) |
 | Klasse | Standard Feld `class` |
 | HTML-Attribute | Ergänzende Attribute wie `data-*`, `aria-*`, `title`, `href`, `style` |
 | Inhalt | Reiner Text |
 
 ## Contao
-Contao: ^4.13 und ^5.0
+Contao: ^4.13 und ^5.0<br>
+PHP:  ^8.1<br>
 
-PHP:  ^8.1
-
-**Contao Inserttags** werden bei der Frontend-Ausgabe umgewandelt, wie `&copy; {{date::Y}}`.
-
-**E-Mails** werden automatisch erkannt und verschlüsselt ausgegeben.
+**Contao Inserttags** werden bei der Frontend-Ausgabe umgewandelt, wie `&copy; {{date::Y}}`.<br>
+**E-Mails** werden automatisch erkannt und verschlüsselt ausgegeben.<br>
 
 
 ## Sicherheit
