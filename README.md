@@ -28,7 +28,7 @@ PHP:  ^8.1<br>
 ## Sicherheit
 Um die Sicherheit zu gewährleisten, werden bei der **Frontend-Ausgabe** die HTML-Tags **gefiltert**, gemäss den Contao-Einstellungen für erlaubte HTML-Tags und erlaubte HTML-Attribute. Wenn nötig, müssen spezielle HTML-Tags und HTML-Attribute in den Einstellungen -> Sicherheitseinstellungen hinzugefügt werden.
 
-Beispiel
+Beispiel Konfiguration
 
 Erlaubte HTML-Tags: 
 ```
