@@ -22,7 +22,7 @@ Contao: ^4.13 oder ^5.0<br>
 PHP:  ^8.1<br>
 
 **Contao Inserttags** werden bei der Frontend-Ausgabe umgewandelt, wie `© {{date::Y}}`.<br>
-**E-Mails** werden automatisch erkannt und verschlüsselt ausgegeben.<br>
+**E-Mails** werden automatisch erkannt und in Unicode ausgegeben.<br>
 
 
 ## Sicherheit
