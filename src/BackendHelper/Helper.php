@@ -3,8 +3,8 @@
 declare (strict_types = 1);
 
 namespace Delirius\ContaoStructureElements\BackendHelper;
-use Contao\System;
 use Contao\DataContainer;
+use Contao\System;
 
 /**
  * Generall Helper Class for Backend
@@ -13,13 +13,13 @@ class Helper {
 
 	public function onsubmitCallback(DataContainer $dc) {
 
-		if (!in_array($dc->activeRecord->type, array('structure_start', 'structure_stop', 'form_structure_start', 'form_structure_stop'))) {
+		if ( ! in_array($dc->activeRecord->type, array('structure_start', 'structure_stop', 'form_structure_start', 'form_structure_stop'))) {
 			return;
 		}
 
 		$this->table = $dc->table;
 
-		if (!$this->table || !in_array($this->table, array('tl_content', 'tl_form_field'))) {
+		if ( ! $this->table || ! in_array($this->table, array('tl_content', 'tl_form_field'))) {
 			return;
 		}
 
@@ -69,13 +69,13 @@ class Helper {
 
 	public function ondeleteCallback(DataContainer $dc) {
 
-		if (!in_array($dc->activeRecord->type, array('structure_start', 'structure_stop', 'form_structure_start', 'form_structure_stop'))) {
+		if ( ! in_array($dc->activeRecord->type, array('structure_start', 'structure_stop', 'form_structure_start', 'form_structure_stop'))) {
 			return;
 		}
 
 		$this->table = $dc->table;
 
-		if (!$this->table || !in_array($this->table, array('tl_content', 'tl_form_field'))) {
+		if ( ! $this->table || ! in_array($this->table, array('tl_content', 'tl_form_field'))) {
 			return;
 		}
 
@@ -135,21 +135,25 @@ class Helper {
 			$this->updateSelf($id, $arrArg);
 		}
 
-		// copy
-		$query = 'SELECT * FROM ' . $this->table . ' WHERE id = ?';
+		// copy entry
+		// type, pid, ptable, sorting
+		// strc_pairing, strc_pairing_update
+
+		$query = 'SELECT type, pid, ptable, sorting, strc_pairing, strc_pairing_update FROM ' . $this->table . ' WHERE id = ? LIMIT 1';
 		$stmt = $this->db->executeQuery($query, [$id]);
 		$arrRow = $stmt->fetchAllAssociative();
 
-		unset($arrRow[0]['id']); //Remove ID from array
-		$arrRow[0]['type'] = str_replace('start', 'stop', $type);
-		$arrRow[0]['strc_pairing'] = $id;
-		$arrRow[0]['strc_pairing_update'] = $id;
-		$arrRow[0]['tstamp'] = time();
-		$arrRow[0]['sorting'] = $arrRow[0]['sorting'] + 1;
+		$arrRowInsert['type'] = str_replace('start', 'stop', $type);
+		$arrRowInsert['pid'] = $arrRow[0]['pid'];
+		$arrRowInsert['ptable'] = $arrRow[0]['ptable'];
+		$arrRowInsert['sorting'] = $arrRow[0]['sorting'] + 1;
+		$arrRowInsert['strc_pairing'] = $id;
+		$arrRowInsert['strc_pairing_update'] = $id;
+		$arrRowInsert['tstamp'] = time();
 
 		$queryInsert = " INSERT INTO " . $this->table;
-		$queryInsert .= " ( " . implode(", ", array_keys($arrRow[0])) . ") ";
-		$queryInsert .= " VALUES ('" . implode("', '", array_values($arrRow[0])) . "')";
+		$queryInsert .= " ( " . implode(", ", array_keys($arrRowInsert)) . ") ";
+		$queryInsert .= " VALUES ('" . implode("', '", array_values($arrRowInsert)) . "')";
 
 		$stmt = $this->db->executeQuery($queryInsert, []);
 		$lastId = $this->db->lastInsertId();
