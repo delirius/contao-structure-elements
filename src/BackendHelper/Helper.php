@@ -139,7 +139,7 @@ class Helper {
 		// type, pid, ptable, sorting
 		// strc_pairing, strc_pairing_update
 
-		if ($type == 'structure_stop') {
+		if ($type == 'structure_start') {
 			$query = 'SELECT type, pid, ptable, sorting, strc_pairing, strc_pairing_update FROM ' . $this->table . ' WHERE id = ? LIMIT 1';
 		} else {
 			$query = 'SELECT type, pid, sorting, strc_pairing, strc_pairing_update FROM ' . $this->table . ' WHERE id = ? LIMIT 1';
@@ -149,7 +149,7 @@ class Helper {
 
 		$arrRowInsert['type'] = str_replace('start', 'stop', $type);
 		$arrRowInsert['pid'] = $arrRow[0]['pid'];
-		if ($type == 'structure_stop') {
+		if ($type == 'structure_start') {
 			$arrRowInsert['ptable'] = $arrRow[0]['ptable'];
 		}
 		$arrRowInsert['sorting'] = $arrRow[0]['sorting'] + 1;

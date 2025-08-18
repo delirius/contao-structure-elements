@@ -11,7 +11,7 @@ class parseBackendTemplateListener {
 	public function onparseBackendTemplate(string $buffer, string $template): string {
 		if ('be_main' === $template) {
 
-			if (Input::get('do') == 'article') {
+			if (Input::get('table') == 'tl_content') {
 				// Get the database connection
 				$db = System::getContainer()->get('database_connection');
 
@@ -32,7 +32,7 @@ class parseBackendTemplateListener {
 						}
 					}
 				}
-			} elseif (Input::get('do') == 'form') {
+			} elseif (Input::get('table') == 'tl_form_field') {
 				// Get the database connection
 				$db = System::getContainer()->get('database_connection');
 
