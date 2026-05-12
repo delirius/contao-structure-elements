@@ -29,7 +29,7 @@ $GLOBALS['TL_LANG']['tl_form_field']['structure_legend'] = "Element";
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_form_field']['strc_title'] = ["Titel", ""];
+$GLOBALS['TL_LANG']['tl_form_field']['strc_title'] = ["Interner Titel", ""];
 $GLOBALS['TL_LANG']['tl_form_field']['strc_element'] = ["HTML-Tag", "Erlaubt sind HTML-Tags gemäss den Contao-Einstellungen z.B. div, span, button, a"];
 $GLOBALS['TL_LANG']['tl_form_field']['strc_element_attribute'] = ["HTML-Attribute", "Erlaubt sind HTML-Attribute gemäss den Contao-Einstellungen z.B. data-bs-toggle=\"collapse\", aria-expanded=\"false\", title=\"Show\", href=\"#\", style=\"color:blue;\""];
 $GLOBALS['TL_LANG']['tl_form_field']['strc_content'] = ["Inhalt", "Reiner Text für Buttons, Links, usw."];

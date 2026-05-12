@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 // src/EventListener/DisableButtonCallback.php
 namespace Delirius\ContaoStructureElements\EventListener;
 
@@ -8,8 +11,16 @@ use Contao\DataContainer;
 use Contao\Image;
 use Contao\StringUtil;
 
-#[AsCallback(table: 'tl_content', target: 'list.operations.edit.button'), AsCallback(table: 'tl_content', target: 'list.operations.copy.button'), AsCallback(table: 'tl_content', target: 'list.operations.cut.button'), AsCallback(table: 'tl_form_field', target: 'list.operations.edit.button'), AsCallback(table: 'tl_form_field', target: 'list.operations.copy.button'), AsCallback(table: 'tl_form_field', target: 'list.operations.cut.button')]
-class DisableButtonCallback {
+
+#[AsCallback(table: 'tl_content', target: 'list.operations.edit.button')]
+#[AsCallback(table: 'tl_content', target: 'list.operations.copy.button')]
+#[AsCallback(table: 'tl_content', target: 'list.operations.cut.button')]
+#[AsCallback(table: 'tl_form_field', target: 'list.operations.edit.button')]
+#[AsCallback(table: 'tl_form_field', target: 'list.operations.copy.button')]
+#[AsCallback(table: 'tl_form_field', target: 'list.operations.cut.button')]
+class DisableButtonCallback
+{
+	private const STOP_TYPES = ['structure_stop', 'form_structure_stop'];
 
 	public function __invoke(
 		array $row,
@@ -24,13 +35,12 @@ class DisableButtonCallback {
 		bool $circularReference,
 		?string $previous,
 		?string $next,
-		DataContainer $dc
-
+		DataContainer $dc,
 	): string {
-
-		if ($row['type'] === 'structure_stop' || $row['type'] === 'form_structure_stop') {
+		if (in_array($row['type'], self::STOP_TYPES, true)) {
 			return '';
 		}
+
 		return sprintf(
 			'<a href="%s" title="%s"%s>%s</a> ',
 			Backend::addToUrl($href . '&amp;id=' . $row['id']),
@@ -39,6 +49,4 @@ class DisableButtonCallback {
 			Image::getHtml($icon, $label)
 		);
 	}
-	//$GLOBALS['TL_DCA']['tl_content']['fields']['text']['eval']['mandatory'] = false;
-
 }
