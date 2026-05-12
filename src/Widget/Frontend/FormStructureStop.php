@@ -54,7 +54,7 @@ class FormStructureStop extends Widget
 
 			$strHtml = Helper::generateBackendDesign('stop', $this->strc_color, $this->strc_title, $this->strc_element);
 
-			$objTemplate = new BackendTemplate('be_wildcard');
+			$objTemplate = new BackendTemplate('strc_be_wildcard');
 			//$objTemplate->title = $this->strc_title ;
 			//$objTemplate->wildcard = '### ' . $this->strc_title . $this->class . ' ###';
 			$objTemplate->description = $strHtml;

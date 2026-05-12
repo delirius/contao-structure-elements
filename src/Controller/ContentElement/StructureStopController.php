@@ -17,17 +17,19 @@ namespace Delirius\ContaoStructureElements\Controller\ContentElement;
 use Contao\ContentModel;
 use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
+use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\System;
-use Contao\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Delirius\ContaoStructureElements\BackendHelper\Helper;
 
 #[AsContentElement(category: 'structure_elements', template: 'ce_structure_stop')]
-class StructureStopController extends AbstractContentElementController {
+class StructureStopController extends AbstractContentElementController
+{
 	public const TYPE = 'structure_stop';
 
-	protected function getResponse(Template $template, ContentModel $model, Request $request): Response{
+	protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
+	{
 
 		$strHtml = '</';
 		$strHtml .= $model->strc_element;
@@ -37,8 +39,7 @@ class StructureStopController extends AbstractContentElementController {
 			$strHtml = Helper::generateBackendDesign('stop', $model->strc_color, $model->strc_title, $model->strc_element);
 		}
 
-		// $template->text = $model->text;
-		$template->html = $strHtml;
+		$template->set('html', $strHtml);
 
 		return $template->getResponse();
 	}

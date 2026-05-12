@@ -72,7 +72,7 @@ class FormStructureStart extends Widget
 
 			$strHtml = Helper::generateBackendDesign('start', $this->strc_color, $this->strc_title, $this->strc_element, $this->strc_content, $arrAttr);
 
-			$objTemplate = new BackendTemplate('be_wildcard');
+			$objTemplate = new BackendTemplate('strc_be_wildcard');
 			//$objTemplate->title = $this->strc_title ;
 			//$objTemplate->wildcard = '### ' . $this->strc_title . $this->class . ' ###';
 			$objTemplate->description = $strHtml;

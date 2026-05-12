@@ -17,20 +17,22 @@ namespace Delirius\ContaoStructureElements\Controller\ContentElement;
 use Contao\ContentModel;
 use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
+use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\System;
 use Contao\Config;
 use Contao\Input;
-use Contao\Template;
 use Contao\StringUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Delirius\ContaoStructureElements\BackendHelper\Helper;
 
 #[AsContentElement(category: 'structure_elements', template: 'ce_structure_start')]
-class StructureStartController extends AbstractContentElementController {
+class StructureStartController extends AbstractContentElementController
+{
 	public const TYPE = 'structure_start';
 
-	protected function getResponse(Template $template, ContentModel $model, Request $request): Response{
+	protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
+	{
 
 		$arrAttr = array();
 
@@ -73,8 +75,7 @@ class StructureStartController extends AbstractContentElementController {
 			$strHtml = Helper::generateBackendDesign('start', $model->strc_color, $model->strc_title, $model->strc_element, $model->strc_content, $arrAttr);
 		}
 
-		// $template->text = $model->text;
-		$template->html = Input::stripTags($strHtml, Config::get('allowedTags'), Config::get('allowedAttributes'));
+		$template->set('html', Input::stripTags($strHtml, Config::get('allowedTags'), Config::get('allowedAttributes')));
 
 		return $template->getResponse();
 	}
