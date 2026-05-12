@@ -3,203 +3,229 @@
 declare (strict_types = 1);
 
 namespace Delirius\ContaoStructureElements\BackendHelper;
+use Contao\ContentModel;
 use Contao\DataContainer;
-use Contao\System;
+use Contao\FormFieldModel;
 
 /**
  * Generall Helper Class for Backend
  */
 class Helper {
 
-	public function onsubmitCallback(DataContainer $dc) {
-
-		if ( ! in_array($dc->activeRecord->type, array('structure_start', 'structure_stop', 'form_structure_start', 'form_structure_stop'))) {
+	public function onsubmitCallback(DataContainer $dc): void
+	{
+		$validTypes = ['structure_start', 'structure_stop', 'form_structure_start', 'form_structure_stop'];
+		if (!in_array($dc->activeRecord->type, $validTypes, true)) {
 			return;
 		}
 
 		$this->table = $dc->table;
-
-		if ( ! $this->table || ! in_array($this->table, array('tl_content', 'tl_form_field'))) {
+		if (!$this->table || !in_array($this->table, ['tl_content', 'tl_form_field'], true)) {
 			return;
 		}
 
-		$this->db = System::getContainer()->get('database_connection');
+		$modelClass = $this->getModelClass();
 
-		$id = $dc->activeRecord->id;
-		$type = $dc->activeRecord->type; // structure_start structure_stop
+		$id   = (int) $dc->activeRecord->id;
+		$type = $dc->activeRecord->type;
 
 		if ($type === 'structure_start' || $type === 'form_structure_start') {
-			$arrArg = array();
-			if ($dc->activeRecord->strc_pairing == 0 || $dc->activeRecord->strc_pairing != $id) {
-				$arrArg[] = 'strc_pairing=' . $id;
-				$arrArg[] = 'strc_pairing_update=' . $id;
-			}
-			if ($dc->activeRecord->strc_color == '') {
-				$arrArg[] = 'strc_color="' . $this->randomColor() . '"';
-			}
-			if ($dc->activeRecord->strc_element == '') {
-				$arrArg[] = 'strc_element="div"';
-			}
-			if (count($arrArg) > 0) {
-				$this->updateSelf($id, $arrArg);
+
+			// Defaults auf dem Start-Element sicherstellen, ohne rohe SQL-Strings
+			$objSelf = $modelClass::findById($id);
+			if ($objSelf !== null) {
+				$changed = false;
+
+				if ((int) $objSelf->strc_pairing === 0 || (int) $objSelf->strc_pairing !== $id) {
+					$objSelf->strc_pairing        = $id;
+					$objSelf->strc_pairing_update = $id;
+					$changed = true;
+				}
+				if ($objSelf->strc_color === '') {
+					$objSelf->strc_color = static::randomColor();
+					$changed = true;
+				}
+				if ($objSelf->strc_element === '') {
+					$objSelf->strc_element = 'div';
+					$changed = true;
+				}
+				if ($changed) {
+					$objSelf->save();
+				}
 			}
 
-			$pairingID = $this->getPairingId($id);
-
-			if ($pairingID == 0) {
+			if ($this->getPairingId($id) === 0) {
 				$this->createPairing($id, $type);
 			}
-
 			$this->updatePairing($id);
-
 		}
 
 		if ($type === 'structure_stop' || $type === 'form_structure_stop') {
-			$pairingID = $this->getPairingId($id);
-
-			if ($pairingID == 0) {
+			if ($this->getPairingId($id) === 0) {
 				$this->createPairing($id, $type);
 			}
-
 			$this->updatePairing($id);
-
 		}
-
 	}
 
-	public function ondeleteCallback(DataContainer $dc) {
-
-		if ( ! in_array($dc->activeRecord->type, array('structure_start', 'structure_stop', 'form_structure_start', 'form_structure_stop'))) {
+	public function ondeleteCallback(DataContainer $dc): void
+	{
+		$validTypes = ['structure_start', 'structure_stop', 'form_structure_start', 'form_structure_stop'];
+		if (!in_array($dc->activeRecord->type, $validTypes, true)) {
 			return;
 		}
 
 		$this->table = $dc->table;
-
-		if ( ! $this->table || ! in_array($this->table, array('tl_content', 'tl_form_field'))) {
+		if (!$this->table || !in_array($this->table, ['tl_content', 'tl_form_field'], true)) {
 			return;
 		}
 
-		$pairing = $dc->activeRecord->strc_pairing;
-		$this->deletePairing($pairing);
-
+		$this->deletePairing((int) $dc->activeRecord->strc_pairing);
 	}
 
-	public function updateSelf($id = 0, $arrArg = array()) {
-
-		if ($id == 0 || count($arrArg) < 1) {
+	public function updatePairing(int $id): void
+	{
+		if ($id === 0) {
 			return;
 		}
 
-		$query = 'UPDATE ' . $this->table . ' SET ' . implode(',', $arrArg) . ' WHERE id = ?';
-		$stmt = $this->db->executeQuery($query, [$id]);
+		$modelClass = $this->getModelClass();
+		if ($modelClass === null) {
+			return;
+		}
+
+		// Quell-Element (Start) laden, um die zu synchronisierenden Werte zu lesen
+		$objSource = $modelClass::findById($id);
+		if ($objSource === null) {
+			return;
+		}
+
+		// Alle Partner mit derselben strc_pairing-ID laden und Felder synchronisieren.
+		// Kein String-Konkatenation, kein SQL-Injection-Risiko mehr.
+		$objPartners = $modelClass::findBy('strc_pairing', $id);
+		if ($objPartners === null) {
+			return;
+		}
+
+		foreach ($objPartners as $objPartner) {
+			$objPartner->strc_title          = $objSource->strc_title;
+			$objPartner->strc_color          = $objSource->strc_color;
+			$objPartner->strc_element        = $objSource->strc_element;
+			$objPartner->strc_pairing_update = $objSource->strc_pairing_update;
+			$objPartner->save();
+		}
 	}
 
-	public function updatePairing($id = 0) {
-
-		if ($id == 0) {
-			return;
+	public function createPairing(int $id, string $type): ?int
+	{
+		if ($id === 0) {
+			return null;
 		}
 
-		$query = 'SELECT strc_title, strc_color,strc_element,strc_pairing_update FROM ' . $this->table . ' WHERE id = ?';
-		$stmt = $this->db->executeQuery($query, [$id]);
-		$arrRow = $stmt->fetchAllAssociative();
-
-		$arrArg = array();
-		if (is_array($arrRow) && count($arrRow) == 1) {
-			foreach ($arrRow[0] as $key => $value) {
-				$arrArg[] = $key . '="' . $value . '"';
-			}
+		$modelClass = $this->getModelClass();
+		if ($modelClass === null) {
+			return null;
 		}
 
-		$query = 'UPDATE ' . $this->table . ' SET ' . implode(',', $arrArg) . ' WHERE strc_pairing = ?';
-		$stmt = $this->db->executeQuery($query, [$id]);
+		// Aktuelles Element laden
+		$objCurrent = $modelClass::findById($id);
+		if ($objCurrent === null) {
+			return null;
+		}
 
+		// Fallback: Wenn ein Stop-Element zuerst gespeichert wurde, wird es nachträglich in ein Start-Element umgewandelt
+		if ($type === 'structure_stop' || $type === 'form_structure_stop') {
+			$objCurrent->type               = str_replace('stop', 'start', $type);
+			$objCurrent->strc_element       = $objCurrent->strc_element ?: 'div';
+			$objCurrent->strc_color         = $objCurrent->strc_color    ?: static::randomColor();
+			$objCurrent->strc_pairing       = $id;
+			$objCurrent->strc_pairing_update = $id;
+			$objCurrent->save();
+		}
+
+		// Das zugehörige Stop-Element erstellen.
+		// id aus dem Row-Array entfernen, damit setRow() keinen Registry-Konflikt auslöst
+		// Ohne id im Row führt save() automatisch ein INSERT aus.
+		$row = $objCurrent->row();
+		unset($row['id']);
+
+		$objStop = new $modelClass();
+		$objStop->setRow($row);
+		$objStop->type                = str_replace('start', 'stop', $type);
+		$objStop->sorting             = (int) $objCurrent->sorting + 1;
+		$objStop->strc_pairing        = $id;
+		$objStop->strc_pairing_update = $id;
+		$objStop->tstamp              = time();
+		$objStop->save();
+
+		return (int) $objStop->id;
 	}
 
-	public function createPairing($id = 0, $type = '') {
-
-		if ($id == 0) {
+	public function deletePairing(int $pairid): void
+	{
+		if ($pairid === 0) {
 			return;
 		}
 
-		if ($type == 'structure_stop' || $type == 'form_structure_stop') {
-			// change to start and then create stop
-			$arrArg = array();
-
-			$arrArg[] = 'type="' . str_replace('stop', 'start', $type) . '"';
-			$arrArg[] = 'strc_element="div"';
-			$arrArg[] = 'strc_color="' . $this->randomColor() . '"';
-//			$arrArg[] = 'strc_title="New structure element"';
-			$arrArg[] = 'strc_pairing=' . $id;
-			$arrArg[] = 'strc_pairing_update=' . $id;
-			$this->updateSelf($id, $arrArg);
+		$modelClass = $this->getModelClass();
+		if ($modelClass === null) {
+			return;
 		}
 
-		// copy entry
-		// type, pid, ptable, sorting
-		// strc_pairing, strc_pairing_update
-
-		if ($type == 'structure_start') {
-			$query = 'SELECT type, pid, ptable, sorting, strc_pairing, strc_pairing_update FROM ' . $this->table . ' WHERE id = ? LIMIT 1';
-		} else {
-			$query = 'SELECT type, pid, sorting, strc_pairing, strc_pairing_update FROM ' . $this->table . ' WHERE id = ? LIMIT 1';
+		// Alle zusammengehörigen Elemente laden und einzeln löschen.
+		// Model->delete() entfernt den Datensatz und deregistriert ihn aus dem Registry.
+		$objElements = $modelClass::findBy('strc_pairing', $pairid);
+		if ($objElements === null) {
+			return;
 		}
-		$stmt = $this->db->executeQuery($query, [$id]);
-		$arrRow = $stmt->fetchAllAssociative();
 
-		$arrRowInsert['type'] = str_replace('start', 'stop', $type);
-		$arrRowInsert['pid'] = $arrRow[0]['pid'];
-		if ($type == 'structure_start') {
-			$arrRowInsert['ptable'] = $arrRow[0]['ptable'];
+		foreach ($objElements as $objElement) {
+			$objElement->delete();
 		}
-		$arrRowInsert['sorting'] = $arrRow[0]['sorting'] + 1;
-		$arrRowInsert['strc_pairing'] = $id;
-		$arrRowInsert['strc_pairing_update'] = $id;
-		$arrRowInsert['tstamp'] = time();
-
-		$queryInsert = " INSERT INTO " . $this->table;
-		$queryInsert .= " ( " . implode(", ", array_keys($arrRowInsert)) . ") ";
-		$queryInsert .= " VALUES ('" . implode("', '", array_values($arrRowInsert)) . "')";
-
-		$stmt = $this->db->executeQuery($queryInsert, []);
-		$lastId = $this->db->lastInsertId();
-		return $lastId;
 	}
 
-	public function deletePairing($pairid = 0) {
-
-		if ($pairid == 0) {
-			return;
-		}
-
-		// Get the database connection
-		$db = System::getContainer()->get('database_connection');
-
-		// delete
-		$query = 'DELETE FROM ' . $this->table . ' WHERE strc_pairing = ?';
-		$stmt = $db->executeQuery($query, [$pairid]);
-		$stmt->fetchAllAssociative();
-
-	}
-
-	public function getPairingId($id = 0) {
-
-		if ($id == 0) {
-			return;
-		}
-
-		$query = 'SELECT strc_pairing FROM ' . $this->table . ' WHERE  id = ?';
-		$stmt = $this->db->executeQuery($query, [$id]);
-		$idPairing = $stmt->fetchOne();
-
-		$query = 'SELECT id FROM ' . $this->table . ' WHERE  strc_pairing = ?';
-		$stmt = $this->db->executeQuery($query, [$idPairing]);
-		if ($stmt->rowCount() > 1) {
-			// $row = $stmt->fetchAssociative();
-			return $idPairing;
-		} else {
+	public function getPairingId(int $id): int
+	{
+		if ($id === 0) {
 			return 0;
 		}
+
+		$modelClass = $this->getModelClass();
+		if ($modelClass === null) {
+			return 0;
+		}
+
+		// Schritt 1: strc_pairing des aktuellen Elements lesen
+		$objCurrent = $modelClass::findById($id);
+		if ($objCurrent === null) {
+			return 0;
+		}
+
+		$pairingId = (int) $objCurrent->strc_pairing;
+		if ($pairingId === 0) {
+			return 0;
+		}
+
+		// Schritt 2: Prüfen ob mindestens ein anderes Element mit dieser strc_pairing-ID existiert.
+		// Nur dann ist das Pairing vollständig (Start + Stop vorhanden).
+		$objPaired = $modelClass::findBy('strc_pairing', $pairingId);
+		if ($objPaired !== null && $objPaired->count() > 1) {
+			return $pairingId;
+		}
+
+		return 0;
+	}
+
+	/**
+	 * Gibt die Model-Klasse für $this->table zurück, oder null für unbekannte Tabellen.
+	 */
+	private function getModelClass(): ?string
+	{
+		return match ($this->table) {
+			'tl_content'    => ContentModel::class,
+			'tl_form_field' => FormFieldModel::class,
+			default         => null,
+		};
 	}
 
 	public static function randomColor() {

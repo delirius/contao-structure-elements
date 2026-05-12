@@ -1,63 +1,69 @@
 <?php
+
+declare(strict_types=1);
+
 // src/EventListener/parseBackendTemplate.php
 namespace Delirius\ContaoStructureElements\EventListener;
 
+use Contao\ContentModel;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
-use Contao\System;
+use Contao\FormFieldModel;
 use Contao\Input;
 
-class parseBackendTemplateListener {
+class parseBackendTemplateListener
+{
 	#[AsHook('parseBackendTemplate', priority: 100)]
-	public function onparseBackendTemplate(string $buffer, string $template): string {
-		if ('be_main' === $template) {
-
-			if (Input::get('table') == 'tl_content') {
-				// Get the database connection
-				$db = System::getContainer()->get('database_connection');
-
-				// Update tl_content
-				$query = 'SELECT id,strc_pairing_update FROM tl_content WHERE type=? AND strc_pairing = "" ';
-				$stmt = $db->executeQuery($query, ['structure_start']);
-				if ($stmt->rowCount() > 0) {
-
-					while (false !== ($row = $stmt->fetchAssociative())) {
-						if ($row['strc_pairing_update']) {
-
-							$arrArg = array();
-							$arrArg[] = 'strc_pairing=' . $row['id'] . '';
-							$arrArg[] = 'strc_pairing_update=' . $row['id'] . '';
-
-							$queryUpdate = 'UPDATE tl_content SET ' . implode(',', $arrArg) . ' WHERE strc_pairing = 0 AND strc_pairing_update = ?';
-							$db->executeQuery($queryUpdate, [$row['strc_pairing_update']]);
-						}
-					}
-				}
-			} elseif (Input::get('table') == 'tl_form_field') {
-				// Get the database connection
-				$db = System::getContainer()->get('database_connection');
-
-				// Update tl_form_field
-				$query = 'SELECT id,strc_pairing_update FROM tl_form_field WHERE type=? AND strc_pairing = "" ';
-				$stmt = $db->executeQuery($query, ['form_structure_start']);
-				if ($stmt->rowCount() > 0) {
-
-					while (false !== ($row = $stmt->fetchAssociative())) {
-						if ($row['strc_pairing_update']) {
-
-							$arrArg = array();
-							$arrArg[] = 'strc_pairing=' . $row['id'] . '';
-							$arrArg[] = 'strc_pairing_update=' . $row['id'] . '';
-
-							$queryUpdate = 'UPDATE tl_form_field SET ' . implode(',', $arrArg) . ' WHERE strc_pairing = 0 AND strc_pairing_update = ?';
-							$db->executeQuery($queryUpdate, [$row['strc_pairing_update']]);
-						}
-					}
-				}
-
-			}
+	public function onparseBackendTemplate(string $buffer, string $template): string
+	{
+		if ('be_main' !== $template) {
+			return $buffer;
 		}
+
+		$table = Input::get('table');
+
+		if ($table === 'tl_content') {
+			$this->repairOrphanedPairings(ContentModel::class, 'structure_start');
+		} elseif ($table === 'tl_form_field') {
+			$this->repairOrphanedPairings(FormFieldModel::class, 'form_structure_start');
+		}
+
 		return $buffer;
 	}
-}
 
-?>
+	/**
+	 * Repariert Start-Elemente, die nach einem Kopiervorgang noch kein strc_pairing gesetzt haben.
+	 * Findet die zugehörigen Stop-Elemente anhand von strc_pairing_update und verknüpft sie.
+	 *
+	 * @param class-string $modelClass
+	 */
+	private function repairOrphanedPairings(string $modelClass, string $type): void
+	{
+		// Start-Elemente ohne gesetztes strc_pairing laden
+		$objStarts = $modelClass::findBy(['type=?', 'strc_pairing=?'], [$type, '']);
+		if ($objStarts === null) {
+			return;
+		}
+
+		foreach ($objStarts as $objStart) {
+			if (!$objStart->strc_pairing_update) {
+				continue;
+			}
+
+			// Zugehörige Stop-Elemente ohne Pairing anhand von strc_pairing_update finden
+			$objOrphans = $modelClass::findBy(
+				['strc_pairing=?', 'strc_pairing_update=?'],
+				[0, $objStart->strc_pairing_update]
+			);
+
+			if ($objOrphans === null) {
+				continue;
+			}
+
+			foreach ($objOrphans as $objOrphan) {
+				$objOrphan->strc_pairing        = $objStart->id;
+				$objOrphan->strc_pairing_update = $objStart->id;
+				$objOrphan->save();
+			}
+		}
+	}
+}
