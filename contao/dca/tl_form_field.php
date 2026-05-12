@@ -23,9 +23,6 @@ $GLOBALS['TL_DCA']['tl_form_field']['palettes'][FormStructureStart::TYPE] = '{ty
 
 $GLOBALS['TL_DCA']['tl_form_field']['palettes'][FormStructureStop::TYPE] = '';
 
-$GLOBALS['TL_DCA']['tl_form_field']['config']['onsubmit_callback'][] = array('\Delirius\ContaoStructureElements\BackendHelper\Helper', 'onsubmitCallback');
-$GLOBALS['TL_DCA']['tl_form_field']['config']['ondelete_callback'][] = array('\Delirius\ContaoStructureElements\BackendHelper\Helper', 'ondeleteCallback');
-
 $GLOBALS['TL_DCA']['tl_form_field']['fields']['strc_title'] = array(
 	'exclude' => true, // Zugang fuer Benutzer
 	'search' => true,

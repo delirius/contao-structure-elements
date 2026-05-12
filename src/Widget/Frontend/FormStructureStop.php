@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of Contao.
  *
@@ -19,11 +21,10 @@ use Delirius\ContaoStructureElements\BackendHelper\Helper;
  *
  * @property string $text
  */
-class FormStructureStop extends Widget {
-
+class FormStructureStop extends Widget
+{
 	public const TYPE = 'form_structure_stop';
 
-//echo 'inside FormStructureStart '; exit;
 	/**
 	 * Template
 	 *
@@ -44,10 +45,12 @@ class FormStructureStop extends Widget {
 	public function validate() {
 	}
 
-	public function parse($arrAttributes = null) {
+	public function parse($arrAttributes = null)
+	{
+		$scopeMatcher = System::getContainer()->get('contao.routing.scope_matcher');
 		$request = System::getContainer()->get('request_stack')->getCurrentRequest();
 
-		if ($request && System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request)) {
+		if ($request && $scopeMatcher->isBackendRequest($request)) {
 
 			$strHtml = Helper::generateBackendDesign('stop', $this->strc_color, $this->strc_title, $this->strc_element);
 

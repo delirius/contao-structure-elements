@@ -4,6 +4,7 @@ declare (strict_types = 1);
 
 namespace Delirius\ContaoStructureElements\BackendHelper;
 use Contao\ContentModel;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
 use Contao\FormFieldModel;
 
@@ -12,6 +13,8 @@ use Contao\FormFieldModel;
  */
 class Helper {
 
+	#[AsCallback(table: 'tl_content', target: 'config.onsubmit')]
+	#[AsCallback(table: 'tl_form_field', target: 'config.onsubmit')]
 	public function onsubmitCallback(DataContainer $dc): void
 	{
 		$validTypes = ['structure_start', 'structure_stop', 'form_structure_start', 'form_structure_stop'];
@@ -68,6 +71,8 @@ class Helper {
 		}
 	}
 
+	#[AsCallback(table: 'tl_content', target: 'config.ondelete')]
+	#[AsCallback(table: 'tl_form_field', target: 'config.ondelete')]
 	public function ondeleteCallback(DataContainer $dc): void
 	{
 		$validTypes = ['structure_start', 'structure_stop', 'form_structure_start', 'form_structure_stop'];

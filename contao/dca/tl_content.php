@@ -24,9 +24,6 @@ $GLOBALS['TL_DCA']['tl_content']['palettes'][StructureStartController::TYPE] = '
 
 $GLOBALS['TL_DCA']['tl_content']['palettes'][StructureStopController::TYPE] = '';
 
-$GLOBALS['TL_DCA']['tl_content']['config']['onsubmit_callback'][] = array('\Delirius\ContaoStructureElements\BackendHelper\Helper', 'onsubmitCallback');
-$GLOBALS['TL_DCA']['tl_content']['config']['ondelete_callback'][] = array('\Delirius\ContaoStructureElements\BackendHelper\Helper', 'ondeleteCallback');
-
 $GLOBALS['TL_DCA']['tl_content']['fields']['strc_title'] = array(
 	'exclude' => true, // Zugang fuer Benutzer
 	'search' => true,
