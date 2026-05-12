@@ -69,9 +69,7 @@ class StructureStartController extends AbstractContentElementController {
 			$strHtml .= StringUtil::encodeEmail((string) $model->strc_content);
 		}
 
-		$request = System::getContainer()->get('request_stack')->getCurrentRequest();
-
-		if ($request && System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request)) {
+		if (System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request)) {
 			$strHtml = Helper::generateBackendDesign('start', $model->strc_color, $model->strc_title, $model->strc_element, $model->strc_content, $arrAttr);
 		}
 

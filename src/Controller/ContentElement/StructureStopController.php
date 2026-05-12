@@ -33,9 +33,7 @@ class StructureStopController extends AbstractContentElementController {
 		$strHtml .= $model->strc_element;
 		$strHtml .= '>';
 
-		$request = System::getContainer()->get('request_stack')->getCurrentRequest();
-
-		if ($request && System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request)) {
+		if (System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request)) {
 			$strHtml = Helper::generateBackendDesign('stop', $model->strc_color, $model->strc_title, $model->strc_element);
 		}
 
