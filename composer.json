@@ -1,0 +1,53 @@
+{
+    "name": "delirius/contao-structure-elements",
+    "description": "HTML Struktur Element erstellt jeweils ein Start- und ein Stop-Element anwendbar als Inhaltselement oder als Formularelement. Im Start-Element können HTML-Tag, ID, Klasse und eigene Attribute definiert werden.",
+    "keywords": [
+        "contao",
+        "structure",
+        "struktur",
+        "inhalt",
+        "element",
+        "HTML-Tag",
+        "HTML-Attribute",
+        "form",
+        "formular",
+        "grid",
+        "wrapper",
+        "bundle"
+    ],
+    "type": "contao-bundle",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Daniel Herren",
+            "homepage": "https://delirius.ch",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/delirius/contao-structure-elements/issues",
+        "source": "https://github.com/delirius/contao-structure-elements"
+    },
+    "require": {
+        "php": "^8.1",
+        "contao/core-bundle": "^4.13 || ^5.0"
+    },
+    "require-dev": {
+        "contao/manager-plugin": "^2.12"
+    },
+    "autoload": {
+        "psr-4": {
+            "Delirius\\ContaoStructureElements\\": "src/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "contao-components/installer": false,
+            "contao/manager-plugin": false,
+            "contao-community-alliance/composer-plugin": true
+        }
+    },
+    "extra": {
+        "contao-manager-plugin": "Delirius\\ContaoStructureElements\\ContaoManager\\Plugin"
+    }
+}
