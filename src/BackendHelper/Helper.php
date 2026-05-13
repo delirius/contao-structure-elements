@@ -1,8 +1,9 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace Delirius\ContaoStructureElements\BackendHelper;
+
 use Contao\ContentModel;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
@@ -11,14 +12,16 @@ use Contao\FormFieldModel;
 /**
  * Generall Helper Class for Backend
  */
-class Helper {
+class Helper
+{
+
+	private const VALID_TYPES = ['structure_start', 'structure_stop', 'form_structure_start', 'form_structure_stop'];
 
 	#[AsCallback(table: 'tl_content', target: 'config.onsubmit')]
 	#[AsCallback(table: 'tl_form_field', target: 'config.onsubmit')]
 	public function onsubmitCallback(DataContainer $dc): void
 	{
-		$validTypes = ['structure_start', 'structure_stop', 'form_structure_start', 'form_structure_stop'];
-		if (!in_array($dc->activeRecord->type, $validTypes, true)) {
+		if (!in_array($dc->activeRecord->type, self::VALID_TYPES, true)) {
 			return;
 		}
 
@@ -75,8 +78,7 @@ class Helper {
 	#[AsCallback(table: 'tl_form_field', target: 'config.ondelete')]
 	public function ondeleteCallback(DataContainer $dc): void
 	{
-		$validTypes = ['structure_start', 'structure_stop', 'form_structure_start', 'form_structure_stop'];
-		if (!in_array($dc->activeRecord->type, $validTypes, true)) {
+		if (!in_array($dc->activeRecord->type, self::VALID_TYPES, true)) {
 			return;
 		}
 
@@ -106,13 +108,22 @@ class Helper {
 		}
 
 		// Alle Partner mit derselben strc_pairing-ID laden und Felder synchronisieren.
-		// Kein String-Konkatenation, kein SQL-Injection-Risiko mehr.
 		$objPartners = $modelClass::findBy('strc_pairing', $id);
 		if ($objPartners === null) {
 			return;
 		}
 
+		// pid von Start-Element finden
+		$startpid = 0;
 		foreach ($objPartners as $objPartner) {
+			if ($objPartner->type === 'structure_start' || $objPartner->type === 'form_structure_start') {
+				$startpid = $objPartner->pid;
+				break;
+			}
+		}
+		
+		foreach ($objPartners as $objPartner) {
+			$objPartner->pid                 = $startpid;
 			$objPartner->strc_title          = $objSource->strc_title;
 			$objPartner->strc_color          = $objSource->strc_color;
 			$objPartner->strc_element        = $objSource->strc_element;
@@ -177,14 +188,17 @@ class Helper {
 			return;
 		}
 
-		// Alle zusammengehörigen Elemente laden und einzeln löschen.
-		// Model->delete() entfernt den Datensatz und deregistriert ihn aus dem Registry.
 		$objElements = $modelClass::findBy('strc_pairing', $pairid);
 		if ($objElements === null) {
 			return;
 		}
 
+		// Typ-Prüfung in der Schleife: schützt vor dem Fall, dass ein Element
+		// nach einem Typ-Wechsel im Backend noch dieselbe strc_pairing-ID trägt.
 		foreach ($objElements as $objElement) {
+			if (!in_array($objElement->type, self::VALID_TYPES, true)) {
+				continue;
+			}
 			$objElement->delete();
 		}
 	}
@@ -233,7 +247,8 @@ class Helper {
 		};
 	}
 
-	public static function randomColor() {
+	public static function randomColor()
+	{
 
 		$arrColor = array();
 		$arrColor[] = '990000';
@@ -255,15 +270,15 @@ class Helper {
 			foreach ($arrColor as $color) {
 				$str .= "<br><span style='color:#" . $color . "'>● " . $color . "</span> ";
 			}
-			echo '<pre>' . htmlspecialchars($str) . '</pre>';exit;
-
+			echo '<pre>' . htmlspecialchars($str) . '</pre>';
+			exit;
 		}
 
 		return $arrColor[$rand];
-
 	}
 
-	public static function generateBackendDesign($symbol = 'start', $color = '#ccff55', $title = 'Title', $element = 'div', $content = '', $arrAttr = array()) {
+	public static function generateBackendDesign($symbol = 'start', $color = '#ccff55', $title = 'Title', $element = 'div', $content = '', $arrAttr = array())
+	{
 
 		if ($symbol == 'start') {
 			// $uni = '▼';
@@ -281,7 +296,6 @@ class Helper {
 			if ($content !== '') {
 				$strHtml .= ' ' . html_entity_decode($content);
 			}
-
 		} else {
 			// $uni = '▲';
 			// $uni = '●';
@@ -291,10 +305,8 @@ class Helper {
 			$strHtml .= '<span style="color:#999">';
 			$strHtml .= '/' . $element;
 			$strHtml .= '</span> ';
-
 		}
 
 		return $strHtml;
 	}
-
 }
