@@ -10,7 +10,7 @@ use Contao\DataContainer;
 use Contao\FormFieldModel;
 
 /**
- * Generall Helper Class for Backend
+ *  Helper Class for Backend
  */
 class Helper
 {
@@ -74,6 +74,37 @@ class Helper
 		}
 	}
 
+	#[AsCallback(table: 'tl_content', target: 'config.oncut')]
+	#[AsCallback(table: 'tl_form_field', target: 'config.oncut')]
+	public function oncutCallback(DataContainer $dc): void
+	{
+
+		$this->table = $dc->table;
+
+		if (!$this->table || !in_array($this->table, ['tl_content', 'tl_form_field'], true)) {
+			return;
+		}
+
+		$id   = (int) $dc->id;
+
+		$modelClass = $this->getModelClass();
+		if ($modelClass === null) {
+			return;
+		}
+
+		// Quell-Element (Start) laden, um die zu synchronisierenden Werte zu lesen
+		$objSource = $modelClass::findById($id);
+		$type = $objSource->type;
+
+		if (!in_array($type, self::VALID_TYPES, true)) {
+			return;
+		}
+
+		if ($type === 'structure_start' || $type === 'form_structure_start') {
+			$this->updatePairing($id);
+		}
+	}
+
 	#[AsCallback(table: 'tl_content', target: 'config.ondelete')]
 	#[AsCallback(table: 'tl_form_field', target: 'config.ondelete')]
 	public function ondeleteCallback(DataContainer $dc): void
@@ -121,7 +152,7 @@ class Helper
 				break;
 			}
 		}
-		
+
 		foreach ($objPartners as $objPartner) {
 			$objPartner->pid                 = $startpid;
 			$objPartner->strc_title          = $objSource->strc_title;

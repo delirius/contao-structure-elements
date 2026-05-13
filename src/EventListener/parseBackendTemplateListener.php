@@ -13,6 +13,10 @@ use Contao\Input;
 class parseBackendTemplateListener
 {
 	#[AsHook('parseBackendTemplate', priority: 100)]
+	/*
+	Struktur-Elemente können auf verschiedenen Arten kopiert werden (Seite, Inhalt, Mehrfach-Bearbeitung). 
+	Mit Hilfe von strc_pairing und strc_pairing_update werden die zugehörigen Start- und Stop-Elemente neu zugeordnet.
+	*/
 	public function onparseBackendTemplate(string $buffer, string $template): string
 	{
 		if ('be_main' !== $template) {
@@ -31,7 +35,6 @@ class parseBackendTemplateListener
 	}
 
 	/**
-	 * Repariert Start-Elemente, die nach einem Kopiervorgang noch kein strc_pairing gesetzt haben.
 	 * Findet die zugehörigen Stop-Elemente anhand von strc_pairing_update und verknüpft sie.
 	 *
 	 * @param class-string $modelClass
